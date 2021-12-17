@@ -1,0 +1,24 @@
+﻿@using Microsoft.Extensions.Diagnostics.HealthChecks
+
+@model HealthReport
+
+@{
+    ViewData["Title"] = "Health Status";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p><strong>@Model?.Status.ToString()</strong></p>
+<p>@Model?.TotalDuration.TotalMilliseconds ms</p>
+
+<ul>
+    @foreach(var entry in Model?.Entries)
+    {
+        <li>
+            <strong>@entry.Key - @entry.Value.Status</strong><br>
+            <span>@entry.Value.Duration.TotalMilliseconds</span><br>
+            <span>@entry.Value.Description</span><br>
+            <span>@String.Join(", ", entry.Value.Tags)</span>
+        </li>
+    }
+</ul>

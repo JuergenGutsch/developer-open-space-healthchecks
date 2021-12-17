@@ -1,0 +1,32 @@
+﻿@using Microsoft.Extensions.Diagnostics.HealthChecks
+
+@model HealthReport
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+    @if (Model?.Status == HealthStatus.Healthy)
+    {
+        <div class="alert alert-success">Alles läuft super.</div>
+    }
+    @if (Model?.Status == HealthStatus.Degraded)
+    {
+        <div class="alert alert-warning">
+            Irgend etwas läuft nicht ganz rund.
+            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Health">Report ansehen</a>
+        </div>
+    }
+    @if (Model?.Status == HealthStatus.Unhealthy)
+    {
+        <div class="alert alert-danger">
+            Wir haben Probleme!
+            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Health">Report ansehen</a>
+
+        </div>
+    }
+</div>
