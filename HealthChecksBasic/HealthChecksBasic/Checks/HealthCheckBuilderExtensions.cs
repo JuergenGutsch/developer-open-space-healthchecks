@@ -18,7 +18,7 @@ namespace HealthChecksBasic.Checks
             .AddCheck("Baz", () =>
                 HealthCheckResult.Degraded("Baz is degraded!"), tags: new[] { "demo", "degraded" })
             .AddCheck<ExampleHealthCheck>("Class based",
-                HealthStatus.Unhealthy, tags: new[] { "example" })
+                HealthStatus.Degraded, tags: new[] { "example" })
             .AddCheck("ping", () =>
             {
                 try

@@ -1,6 +1,7 @@
 using HealthChecks.UI.Client;
 using HealthChecksBasic.Checks;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddHealthChecks()
     .AddApplicationChecks();
+
+builder.Services.AddTransient<PingCheckConfig>(x => new PingCheckConfig
+{
+    DegradedStatus = HealthStatus.Healthy,
+    FailureStatus = HealthStatus.Degraded
+});
 
 builder.Services
     .AddHealthChecksUI()

@@ -5,6 +5,13 @@ namespace HealthChecksBasic.Checks
 {
     public class ExampleHealthCheck : IHealthCheck
     {
+        private PingCheckConfig _config;
+
+        public ExampleHealthCheck(PingCheckConfig config)
+        {
+            _config = config;
+        }
+
         public Task<HealthCheckResult> CheckHealthAsync(
             HealthCheckContext context, 
             CancellationToken cancellationToken = default)
@@ -17,13 +24,15 @@ namespace HealthChecksBasic.Checks
                     if (reply.Status != IPStatus.Success)
                     {
                         return Task.FromResult(
-                            new HealthCheckResult(context.Registration.FailureStatus,
+                            new HealthCheckResult(_config.FailureStatus,
                                 "Ping is unhealthy"));
                     }
 
                     if (reply.RoundtripTime > 100)
                     {
-                        return Task.FromResult(HealthCheckResult.Degraded("Ping is degraded"));
+                        return Task.FromResult(
+                            new HealthCheckResult(_config.DegradedStatus, 
+                                "Ping is degraded"));
                     }
 
                     return Task.FromResult(HealthCheckResult.Healthy("Ping is healthy"));
@@ -32,7 +41,7 @@ namespace HealthChecksBasic.Checks
             catch
             {
                 return Task.FromResult(
-                    new HealthCheckResult(context.Registration.FailureStatus, 
+                    new HealthCheckResult(_config.FailureStatus, 
                         "Ping is unhealthy"));
             }
 
